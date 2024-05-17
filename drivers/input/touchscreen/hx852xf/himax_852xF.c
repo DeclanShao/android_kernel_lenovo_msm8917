@@ -924,7 +924,7 @@ static int himax_input_register(struct himax_ts_data *ts)
 	set_bit(KEY_MENU, ts->input_dev->keybit);
 	set_bit(KEY_SEARCH, ts->input_dev->keybit);
 #if defined(HX_SMART_WAKEUP)||defined(HX_PALM_REPORT)
-	set_bit(KEY_POWER, ts->input_dev->keybit);
+	set_bit(KEY_WAKEUP, ts->input_dev->keybit);
 	set_bit(KEY_CUST_01, ts->input_dev->keybit);
 	set_bit(KEY_CUST_02, ts->input_dev->keybit);
 	set_bit(KEY_CUST_03, ts->input_dev->keybit);
@@ -3111,11 +3111,11 @@ bypass_checksum_failed_packet:
 			if((!atomic_read(&ts->suspend_mode))&&(x==0xFA5A)&&(y==0xFA5A)&&(w==0x00))
 				{
 					I(" %s HX_PALM_REPORT KEY power event press\n",__func__);
-					input_report_key(ts->input_dev, KEY_POWER, 1);
+					input_report_key(ts->input_dev, KEY_WAKEUP, 1);
 					input_sync(ts->input_dev);
 					msleep(100);
 					I(" %s HX_PALM_REPORT KEY power event release\n",__func__);
-					input_report_key(ts->input_dev, KEY_POWER, 0);
+					input_report_key(ts->input_dev, KEY_WAKEUP, 0);
 					input_sync(ts->input_dev);
 					return;
 				}
@@ -3251,7 +3251,7 @@ static irqreturn_t himax_ts_thread(int irq, void *ptr)
 		ret_event = himax_parse_wake_event((struct himax_ts_data *)ptr);
 		switch (ret_event) {
 			case EV_GESTURE_PWR:
-				KEY_EVENT = KEY_POWER;
+				KEY_EVENT = KEY_WAKEUP;
 			break;
 			case EV_GESTURE_01:
 				KEY_EVENT = KEY_CUST_01;
@@ -3424,7 +3424,7 @@ static int touch_event_handler(void *ptr)
 		ret_event = himax_parse_wake_event(private_ts);
 		switch (ret_event) {
 			case EV_GESTURE_PWR:
-				KEY_EVENT = KEY_POWER;
+				KEY_EVENT = KEY_WAKEUP;
 			break;
 			case EV_GESTURE_01:
 				KEY_EVENT = KEY_CUST_01;
