@@ -2,7 +2,7 @@
 # Himax Touchscreen driver configuration
 #
 
-config TOUCHSCREEN_HIMAX_I2C
+config CONFIG_TOUCHSCREEN_HIMAX_HX852XF
         tristate "HIMAX HX852xF incell serious i2c touchscreen"
 		depends on TOUCHSCREEN_HIMAX_HX852xF
 		help
