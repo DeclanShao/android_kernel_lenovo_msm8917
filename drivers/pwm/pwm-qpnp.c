@@ -2235,7 +2235,9 @@ static int qpnp_parse_dt_config(struct platform_device *pdev,
 
 	chip->pwm_mode = mode;
 	_pwm_change_mode(chip, mode);
+#if !defined (CONFIG_MACH_LENOVO_TB8704X) || !defined (CONFIG_MACH_LENOVO_TB8704V)
 	_pwm_enable(chip);
+#endif
 
 read_opt_props:
 	/* Initialize optional config parameters from DT if provided */
