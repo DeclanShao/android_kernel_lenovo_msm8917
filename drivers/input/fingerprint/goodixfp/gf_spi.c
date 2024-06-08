@@ -45,7 +45,6 @@
 #include <linux/fb.h>
 #include <linux/pm_qos.h>
 #include <linux/cpufreq.h>
-#include <linux/wakelock.h>
 
 #include "gf_spi.h"
 
@@ -105,7 +104,7 @@ static DECLARE_BITMAP(minors, N_SPI_MINORS);
 static LIST_HEAD(device_list);
 static DEFINE_MUTEX(device_list_lock);
 static struct gf_dev gf;
-static struct wake_lock fp_wakelock;
+static struct wakeup_source fp_wakelock;
 
 static void gf_enable_irq(struct gf_dev *gf_dev)
 {
@@ -404,7 +403,7 @@ static irqreturn_t gf_irq(int irq, void *handle)
 {
 	char temp = 0;
 
-    wake_lock_timeout(&fp_wakelock,HZ*2);
+    __pm_wakeup_event(&fp_wakelock,HZ*2);
 
 #if defined(GF_NETLINK_ENABLE)
     temp = GF_NET_EVENT_IRQ;
@@ -758,7 +757,7 @@ static int gf_probe(struct platform_device *pdev)
 
 	}
 
-	wake_lock_init(&fp_wakelock,WAKE_LOCK_SUSPEND,"fp_wakelock");
+	wakeup_source_init(&fp_wakelock,"fp_wakelock");
 
 	printk("gf probe is ok\n");
 	return status;
@@ -796,7 +795,7 @@ static int gf_remove(struct platform_device *pdev)
     struct gf_dev *gf_dev = &gf;
     FUNC_ENTRY();
 
-    wake_lock_destroy(&fp_wakelock);
+    wakeup_source_trash(&fp_wakelock);
 
     /* make sure ops on existing fds can abort cleanly */
     if (gf_dev->irq){
