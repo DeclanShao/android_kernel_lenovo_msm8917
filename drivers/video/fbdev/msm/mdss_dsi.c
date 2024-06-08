@@ -47,7 +47,7 @@ static struct mdss_dsi_data *mdss_dsi_res;
 
 static struct pm_qos_request mdss_dsi_pm_qos_request;
 
-#ifdef CONFIG_MACH_LENOVO_TB8703
+#if defined(CONFIG_MACH_LENOVO_TB8703) || defined(CONFIG_MACH_LENOVO_TB8704X) || defined(CONFIG_MACH_LENOVO_TB8704V)
 extern int mdss_dsi_panel_lcden_gpio_ctrl(struct mdss_dsi_ctrl_pdata *ctrl, int on);
 #endif
 
@@ -551,10 +551,9 @@ int mdss_dsi_panel_power_ctrl(struct mdss_panel_data *pdata,
 	ctrl_pdata = container_of(pdata, struct mdss_dsi_ctrl_pdata,
 				panel_data);
 
-#ifdef CONFIG_MACH_LENOVO_TB8703
+#if defined(CONFIG_MACH_LENOVO_TB8703) || defined(CONFIG_MACH_LENOVO_TB8704X)  || defined(CONFIG_MACH_LENOVO_TB8704V)
 	mdss_dsi_panel_lcden_gpio_ctrl(ctrl_pdata, power_state);
 #endif
-
 	/*
 	 * If a dynamic mode switch is pending, the regulators should not
 	 * be turned off or on.
