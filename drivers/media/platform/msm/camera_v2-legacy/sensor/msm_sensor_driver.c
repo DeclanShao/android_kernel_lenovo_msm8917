@@ -871,7 +871,7 @@ int32_t msm_sensor_driver_probe(void *setting,
 		}
 	}
 
-#if defined (CONFIG_MACH_LENOVO_TB8704X) ||defined (CONFIG_MACH_LENOVO_TB8704V)
+#if defined (CONFIG_MACH_LENOVO_TB8704X) || defined(CONFIG_MACH_LENOVO_TB8704V)
 	//lct.CHB added for eeprom match id 20161101
 	if(s_vendor_eeprom[i].eeprom_name != NULL){
 	    for(i=0; i<CAMERA_VENDOR_EEPROM_COUNT_MAX; i++){
@@ -895,7 +895,7 @@ int32_t msm_sensor_driver_probe(void *setting,
 		goto free_slave_info;
 	    }
 	}
-#endif/
+#endif
 
 	if (strlen(slave_info->sensor_name) >= MAX_SENSOR_NAME ||
 		strlen(slave_info->eeprom_name) >= MAX_SENSOR_NAME ||
